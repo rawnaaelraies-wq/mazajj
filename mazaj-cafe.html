@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>مزاج كافيه</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+body { font-family: 'Segoe UI', Tahoma, Arial, sans-serif; background: #111; min-height: 100vh; display: flex; justify-content: center; align-items: flex-start; }
+#app { width: 100%; max-width: 430px; min-height: 100vh; background: #1c1c1e; position: relative; overflow: hidden; }
+.screen { display: none; flex-direction: column; min-height: 100vh; }
+.screen.active { display: flex; }
+
+/* TOP BAR */
+.top-bar { background: #000; padding: 14px 16px; display: flex; align-items: center; gap: 12px; flex-shrink: 0; border-bottom: 1px solid #C8A84B33; }
+.top-bar h2 { font-size: 17px; font-weight: 500; color: #C8A84B; }
+.back-btn { background: #1c1c1e; border: 1px solid #C8A84B55; color: #C8A84B; width: 34px; height: 34px; border-radius: 50%; font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+
+/* HOME */
+.home-header { background: #000; padding: 48px 20px 36px; text-align: center; border-bottom: 1px solid #C8A84B22; }
+.home-logo { font-size: 36px; font-weight: 600; color: #C8A84B; letter-spacing: 4px; }
+.home-sub { font-size: 11px; color: #666; letter-spacing: 3px; margin-top: 6px; }
+.home-cup { font-size: 48px; margin-bottom: 12px; }
+.home-body { flex: 1; display: flex; flex-direction: column; justify-content: center; gap: 12px; padding: 32px 24px; }
+.home-btn { width: 100%; padding: 15px 20px; border-radius: 12px; font-size: 15px; font-weight: 500; cursor: pointer; border: none; display: flex; align-items: center; gap: 10px; font-family: inherit; transition: opacity 0.15s; }
+.home-btn:active { opacity: 0.8; }
+.home-btn.gold { background: #C8A84B; color: #000; }
+.home-btn.dark { background: #2c2c2e; color: #ddd; border: 1px solid #3a3a3c; }
+.home-btn .btn-icon { font-size: 20px; }
+
+/* MENU */
+.tab-row { display: flex; overflow-x: auto; gap: 6px; padding: 10px 12px; background: #000; border-bottom: 1px solid #2c2c2e; flex-shrink: 0; scrollbar-width: none; }
+.tab-row::-webkit-scrollbar { display: none; }
+.tab-btn { border: 1px solid #3a3a3c; background: #2c2c2e; border-radius: 20px; padding: 6px 14px; font-size: 12px; cursor: pointer; white-space: nowrap; color: #aaa; font-family: inherit; transition: all 0.15s; }
+.tab-btn.active { background: #C8A84B; color: #000; border-color: #C8A84B; font-weight: 600; }
+.items-list { flex: 1; overflow-y: auto; padding: 10px 12px; }
+.item-card { display: flex; justify-content: space-between; align-items: center; padding: 13px 14px; border: 1px solid #2c2c2e; border-radius: 12px; margin-bottom: 8px; background: #2c2c2e; }
+.item-name { font-size: 15px; font-weight: 500; color: #f0f0f0; }
+.item-price { font-size: 15px; font-weight: 600; color: #C8A84B; }
+
+/* REVIEW */
+.review-body { flex: 1; overflow-y: auto; padding: 14px; }
+.avg-badge { background: #000; border: 1px solid #C8A84B44; border-radius: 14px; padding: 16px; text-align: center; margin-bottom: 16px; }
+.avg-num { font-size: 32px; font-weight: 600; color: #C8A84B; }
+.avg-sub { font-size: 12px; color: #888; margin-top: 4px; }
+.stars-row { display: flex; gap: 10px; justify-content: center; padding: 14px 0 8px; }
+.star-btn { font-size: 32px; background: none; border: none; cursor: pointer; opacity: 0.25; transition: all 0.15s; }
+.star-btn.active { opacity: 1; transform: scale(1.1); }
+.star-label { text-align: center; font-size: 13px; color: #888; margin-bottom: 14px; height: 18px; }
+.field { width: 100%; border: 1px solid #3a3a3c; border-radius: 10px; padding: 10px 13px; font-size: 14px; background: #2c2c2e; color: #f0f0f0; margin-bottom: 10px; font-family: inherit; direction: rtl; }
+textarea.field { min-height: 80px; resize: none; }
+.field:focus { outline: none; border-color: #C8A84B77; }
+.gold-btn { width: 100%; background: #C8A84B; color: #000; border: none; border-radius: 12px; padding: 13px; font-size: 15px; font-weight: 600; cursor: pointer; margin-bottom: 16px; font-family: inherit; }
+.gold-btn:active { opacity: 0.85; }
+.reviews-section h3 { font-size: 13px; color: #888; margin-bottom: 10px; }
+.review-item { border: 1px solid #2c2c2e; border-radius: 12px; padding: 12px 14px; margin-bottom: 8px; background: #2c2c2e; }
+.review-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; }
+.reviewer-name { font-size: 14px; font-weight: 500; color: #f0f0f0; }
+.review-stars { font-size: 13px; letter-spacing: 1px; }
+.review-text { font-size: 13px; color: #aaa; line-height: 1.5; }
+
+/* BOTTOM NAV */
+.bottom-nav { display: flex; background: #000; border-top: 1px solid #2c2c2e; flex-shrink: 0; padding-bottom: env(safe-area-inset-bottom); }
+.nav-btn { flex: 1; padding: 10px 4px 8px; background: none; border: none; cursor: pointer; font-size: 10px; color: #666; display: flex; flex-direction: column; align-items: center; gap: 3px; font-family: inherit; }
+.nav-btn .nicon { font-size: 20px; }
+.nav-btn.active { color: #C8A84B; }
+
+/* QR */
+.qr-screen { flex: 1; overflow-y: auto; padding: 20px 16px; display: flex; flex-direction: column; align-items: center; gap: 20px; }
+.qr-card { background: #2c2c2e; border: 1px solid #3a3a3c; border-radius: 16px; padding: 20px; width: 100%; display: flex; flex-direction: column; align-items: center; gap: 12px; }
+.qr-card-title { font-size: 14px; font-weight: 500; color: #f0f0f0; }
+.qr-inner { background: #fff; padding: 12px; border-radius: 10px; }
+.qr-url { font-size: 11px; color: #888; }
+.qr-note { font-size: 12px; color: #666; text-align: center; padding: 0 20px; }
+
+/* ADMIN LOGIN */
+.login-wrap { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px 28px; gap: 0; }
+.login-icon { font-size: 52px; margin-bottom: 16px; }
+.login-name { font-size: 26px; font-weight: 600; color: #C8A84B; letter-spacing: 3px; margin-bottom: 4px; }
+.login-sub { font-size: 12px; color: #666; margin-bottom: 32px; letter-spacing: 1px; }
+.login-err { font-size: 13px; color: #e74c3c; margin-top: 8px; display: none; text-align: center; }
+
+/* ADMIN PANEL */
+.admin-body { flex: 1; overflow-y: auto; padding: 14px; }
+.admin-section { margin-bottom: 18px; }
+.admin-section > h3 { font-size: 13px; color: #888; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px; }
+.cat-label { font-size: 12px; color: #C8A84B; padding: 8px 0 4px; font-weight: 600; }
+.admin-item { display: flex; align-items: center; gap: 8px; border: 1px solid #2c2c2e; border-radius: 10px; padding: 9px 11px; margin-bottom: 5px; background: #2c2c2e; }
+.admin-item-name { flex: 1; font-size: 13px; font-weight: 500; color: #f0f0f0; }
+.price-in { width: 72px; border: 1px solid #3a3a3c; border-radius: 7px; padding: 5px 7px; font-size: 12px; background: #1c1c1e; color: #f0f0f0; text-align: center; font-family: inherit; }
+.del-btn { background: none; border: none; color: #e74c3c; cursor: pointer; font-size: 18px; padding: 0 2px; flex-shrink: 0; }
+.add-form { background: #2c2c2e; border: 1px solid #3a3a3c; border-radius: 12px; padding: 14px; margin-top: 10px; }
+.add-form label { font-size: 12px; color: #888; display: block; margin-bottom: 8px; }
+.add-form select, .add-form input { width: 100%; border: 1px solid #3a3a3c; border-radius: 8px; padding: 8px 10px; font-size: 13px; background: #1c1c1e; color: #f0f0f0; font-family: inherit; direction: rtl; margin-bottom: 8px; }
+.add-btn { width: 100%; background: #C8A84B; color: #000; border: none; border-radius: 9px; padding: 10px; font-size: 14px; font-weight: 600; cursor: pointer; font-family: inherit; }
+.logout-btn { display: block; margin: 4px auto 12px; background: none; border: 1px solid #3a3a3c; border-radius: 10px; padding: 9px 24px; font-size: 13px; color: #888; cursor: pointer; font-family: inherit; }
+
+/* TOAST */
+.toast { position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%); background: #C8A84B; color: #000; padding: 10px 22px; border-radius: 25px; font-size: 13px; font-weight: 600; opacity: 0; transition: opacity 0.25s; white-space: nowrap; pointer-events: none; z-index: 999; }
+.toast.show { opacity: 1; }
+</style>
+</head>
+<body>
+<div id="app">
+  <div class="toast" id="toast"></div>
+
+  <!-- HOME -->
+  <div class="screen active" id="screen-home">
+    <div class="home-header">
+      <div class="home-cup">☕</div>
+      <div class="home-logo">مزاج كافيه</div>
+      <div class="home-sub">MAZAJ CAFE</div>
+    </div>
+    <div class="home-body">
+      <button class="home-btn gold" onclick="goTo('menu')"><span class="btn-icon">📋</span> المنيو</button>
+      <button class="home-btn dark" onclick="goTo('review')"><span class="btn-icon">⭐</span> اكتب ريفيو</button>
+      <button class="home-btn dark" onclick="goTo('qr')"><span class="btn-icon">📱</span> QR Code</button>
+      <button class="home-btn dark" onclick="goTo('admin-login')"><span class="btn-icon">🛠</span> الأدمن</button>
+    </div>
+  </div>
+
+  <!-- MENU -->
+  <div class="screen" id="screen-menu">
+    <div class="top-bar">
+      <button class="back-btn" onclick="goTo('home')">←</button>
+      <h2>منيو مزاج كافيه</h2>
+    </div>
+    <div class="tab-row" id="tab-row"></div>
+    <div class="items-list" id="items-list"></div>
+    <div class="bottom-nav">
+      <button class="nav-btn" onclick="goTo('home')"><span class="nicon">🏠</span>الرئيسية</button>
+      <button class="nav-btn active"><span class="nicon">📋</span>المنيو</button>
+      <button class="nav-btn" onclick="goTo('review')"><span class="nicon">⭐</span>ريفيو</button>
+    </div>
+  </div>
+
+  <!-- REVIEW -->
+  <div class="screen" id="screen-review">
+    <div class="top-bar">
+      <button class="back-btn" onclick="goTo('home')">←</button>
+      <h2>اكتب ريفيو</h2>
+    </div>
+    <div class="review-body">
+      <div class="avg-badge">
+        <div class="avg-num" id="avg-num">—</div>
+        <div class="avg-sub">متوسط تقييم العملاء</div>
+      </div>
+      <div class="stars-row" id="stars-row">
+        <button class="star-btn" onclick="setStar(1)">⭐</button>
+        <button class="star-btn" onclick="setStar(2)">⭐</button>
+        <button class="star-btn" onclick="setStar(3)">⭐</button>
+        <button class="star-btn" onclick="setStar(4)">⭐</button>
+        <button class="star-btn" onclick="setStar(5)">⭐</button>
+      </div>
+      <div class="star-label" id="star-label">اختر تقييمك</div>
+      <input class="field" id="r-name" placeholder="اسمك (اختياري)" />
+      <textarea class="field" id="r-text" placeholder="شاركنا رأيك في الكافيه..."></textarea>
+      <button class="gold-btn" onclick="submitReview()">إرسال التقييم</button>
+      <div class="reviews-section">
+        <h3>تقييمات العملاء</h3>
+        <div id="reviews-list"></div>
+      </div>
+    </div>
+    <div class="bottom-nav">
+      <button class="nav-btn" onclick="goTo('home')"><span class="nicon">🏠</span>الرئيسية</button>
+      <button class="nav-btn" onclick="goTo('menu')"><span class="nicon">📋</span>المنيو</button>
+      <button class="nav-btn active"><span class="nicon">⭐</span>ريفيو</button>
+    </div>
+  </div>
+
+  <!-- QR -->
+  <div class="screen" id="screen-qr">
+    <div class="top-bar">
+      <button class="back-btn" onclick="goTo('home')">←</button>
+      <h2>QR Code</h2>
+    </div>
+    <div class="qr-screen">
+      <div class="qr-note">اطبع الكودين دول وحطهم على الطاولات — العميل يمسح ويوصل للصفحة</div>
+      <div class="qr-card">
+        <div class="qr-card-title">📋 منيو العملاء</div>
+        <div class="qr-inner" id="qr-menu"></div>
+        <div class="qr-url">mazaj-cafe.netlify.app/menu</div>
+      </div>
+      <div class="qr-card">
+        <div class="qr-card-title">⭐ صفحة الريفيو</div>
+        <div class="qr-inner" id="qr-review"></div>
+        <div class="qr-url">mazaj-cafe.netlify.app/review</div>
+      </div>
+      <div class="qr-note" style="color:#C8A84B; font-size:11px;">بعد النشر على النت، الباركود بيشتغل مع العملاء مباشرةً</div>
+    </div>
+  </div>
+
+  <!-- ADMIN LOGIN -->
+  <div class="screen" id="screen-admin-login">
+    <div class="top-bar">
+      <button class="back-btn" onclick="goTo('home')">←</button>
+      <h2>دخول الأدمن</h2>
+    </div>
+    <div class="login-wrap">
+      <div class="login-icon">☕</div>
+      <div class="login-name">مزاج كافيه</div>
+      <div class="login-sub">لوحة التحكم</div>
+      <input class="field" id="pw-input" type="password" placeholder="كلمة السر" style="text-align:center;" onkeydown="if(event.key==='Enter')adminLogin()" />
+      <div class="login-err" id="login-err">كلمة السر غلط! حاول تاني</div>
+      <button class="gold-btn" onclick="adminLogin()">دخول</button>
+    </div>
+  </div>
+
+  <!-- ADMIN PANEL -->
+  <div class="screen" id="screen-admin">
+    <div class="top-bar">
+      <button class="back-btn" onclick="goTo('home')">←</button>
+      <h2>لوحة الأدمن</h2>
+    </div>
+    <div class="admin-body">
+      <div class="admin-section">
+        <h3>المنيو</h3>
+        <div id="admin-cats"></div>
+        <div class="add-form">
+          <label>إضافة صنف جديد</label>
+          <select id="add-cat"></select>
+          <input id="add-name" placeholder="اسم الصنف" />
+          <input id="add-price" placeholder="السعر (مثال: 45 ج)" />
+          <button class="add-btn" onclick="addItem()">+ إضافة</button>
+        </div>
+      </div>
+      <div class="admin-section">
+        <h3>الريفيوهات (<span id="rev-count">0</span>)</h3>
+        <div id="admin-reviews"></div>
+      </div>
+      <button class="logout-btn" onclick="goTo('home')">خروج</button>
+    </div>
+  </div>
+</div>
+
+<script>
+var ADMIN_PW = "mazaj2025";
+var starVal = 0;
+var starLabels = ["","ضعيف 😕","مقبول 😐","كويس 🙂","جيد جداً 😊","ممتاز! 🤩"];
+var currentCat = "";
+
+var menuData = {
+  "مشروبات ساخنة": [
+    {n:"قهوة عربية",p:"15 ج"},{n:"قهوة تركية",p:"18 ج"},{n:"كابتشينو",p:"35 ج"},
+    {n:"لاتيه",p:"38 ج"},{n:"موكا",p:"40 ج"},{n:"شاي كرك",p:"30 ج"},{n:"شاي أخضر",p:"25 ج"}
+  ],
+  "مشروبات باردة": [
+    {n:"عصير مانجو",p:"35 ج"},{n:"ليموناضة",p:"30 ج"},{n:"آيس لاتيه",p:"40 ج"},
+    {n:"سموذي فراولة",p:"45 ج"},{n:"كولد برو",p:"45 ج"},{n:"ميلك شيك",p:"50 ج"}
+  ],
+  "وجبات خفيفة": [
+    {n:"كرواسون",p:"25 ج"},{n:"سندوتش دجاج",p:"55 ج"},{n:"سندوتش تونة",p:"50 ج"},
+    {n:"بيتزا صغيرة",p:"70 ج"},{n:"باستا",p:"80 ج"}
+  ],
+  "حلويات": [
+    {n:"تشيز كيك",p:"55 ج"},{n:"براوني",p:"40 ج"},{n:"كنافة",p:"45 ج"},{n:"تيراميسو",p:"60 ج"}
+  ],
+  "شيشة": [
+    {n:"شيشة عادي",p:"80 ج"},{n:"شيشة فاخر",p:"120 ج"},{n:"شيشة مضاعف",p:"150 ج"}
+  ]
+};
+
+var reviews = [
+  {name:"أحمد",stars:5,text:"أحلى كافيه في المنطقة!"},
+  {name:"سارة",stars:4,text:"القهوة تحفة والجو هادي"},
+  {name:"محمد",stars:5,text:"الشيشة ممتازة والخدمة سريعة"}
+];
+
+currentCat = Object.keys(menuData)[0];
+
+function goTo(id) {
+  document.querySelectorAll('.screen').forEach(function(s){ s.classList.remove('active'); });
+  document.getElementById('screen-'+id).classList.add('active');
+  window.scrollTo(0,0);
+  if(id==='menu') renderMenu();
+  if(id==='review') renderReviews();
+  if(id==='qr') renderQR();
+  if(id==='admin') renderAdmin();
+}
+
+function renderMenu() {
+  var cats = Object.keys(menuData);
+  var tabRow = document.getElementById('tab-row');
+  tabRow.innerHTML = '';
+  cats.forEach(function(c) {
+    var b = document.createElement('button');
+    b.className = 'tab-btn' + (c===currentCat?' active':'');
+    b.textContent = c;
+    b.onclick = function(){ currentCat=c; renderMenu(); };
+    tabRow.appendChild(b);
+  });
+  var list = document.getElementById('items-list');
+  list.innerHTML = '';
+  (menuData[currentCat]||[]).forEach(function(item){
+    var d = document.createElement('div');
+    d.className = 'item-card';
+    d.innerHTML = '<div class="item-name">'+item.n+'</div><div class="item-price">'+item.p+'</div>';
+    list.appendChild(d);
+  });
+}
+
+function setStar(v) {
+  starVal = v;
+  document.querySelectorAll('.star-btn').forEach(function(b,i){ b.classList.toggle('active', i<v); });
+  document.getElementById('star-label').textContent = starLabels[v];
+}
+
+function submitReview() {
+  if(!starVal){ showToast('اختر تقييم بالنجوم أول'); return; }
+  var name = document.getElementById('r-name').value.trim() || 'عميل';
+  var text = document.getElementById('r-text').value.trim();
+  if(!text){ showToast('اكتب كومنت'); return; }
+  reviews.unshift({name:name,stars:starVal,text:text});
+  document.getElementById('r-name').value='';
+  document.getElementById('r-text').value='';
+  setStar(0); starVal=0;
+  document.getElementById('star-label').textContent='اختر تقييمك';
+  document.querySelectorAll('.star-btn').forEach(function(b){ b.classList.remove('active'); });
+  renderReviews();
+  showToast('شكراً! تم إرسال تقييمك ✓');
+}
+
+function renderReviews() {
+  var avg = reviews.length ? reviews.reduce(function(a,r){return a+r.stars;},0)/reviews.length : 0;
+  document.getElementById('avg-num').textContent = reviews.length ? avg.toFixed(1)+' ⭐' : '—';
+  var list = document.getElementById('reviews-list');
+  list.innerHTML = '';
+  reviews.forEach(function(r){
+    var d = document.createElement('div');
+    d.className = 'review-item';
+    d.innerHTML = '<div class="review-top"><span class="reviewer-name">'+r.name+'</span><span class="review-stars">'+'⭐'.repeat(r.stars)+'</span></div><div class="review-text">'+r.text+'</div>';
+    list.appendChild(d);
+  });
+}
+
+var qrLoaded = false;
+function renderQR() {
+  if(qrLoaded) return;
+  var s = document.createElement('script');
+  s.src = 'https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js';
+  s.onload = function(){
+    new QRCode(document.getElementById('qr-menu'),{text:'https://mazaj-cafe.netlify.app/menu',width:150,height:150,colorDark:'#000000',colorLight:'#ffffff'});
+    new QRCode(document.getElementById('qr-review'),{text:'https://mazaj-cafe.netlify.app/review',width:150,height:150,colorDark:'#000000',colorLight:'#ffffff'});
+    qrLoaded = true;
+  };
+  document.head.appendChild(s);
+}
+
+function adminLogin() {
+  var pw = document.getElementById('pw-input').value;
+  if(pw===ADMIN_PW){
+    document.getElementById('pw-input').value='';
+    document.getElementById('login-err').style.display='none';
+    goTo('admin');
+  } else {
+    document.getElementById('login-err').style.display='block';
+  }
+}
+
+function renderAdmin() {
+  var cats = Object.keys(menuData);
+  var container = document.getElementById('admin-cats');
+  container.innerHTML='';
+  cats.forEach(function(cat){
+    var lbl = document.createElement('div');
+    lbl.className='cat-label'; lbl.textContent=cat;
+    container.appendChild(lbl);
+    menuData[cat].forEach(function(item,i){
+      var row = document.createElement('div');
+      row.className='admin-item';
+      var catKey = cat.replace(/'/g,"\\'");
+      row.innerHTML='<span class="admin-item-name">'+item.n+'</span>'+
+        '<input class="price-in" value="'+item.p+'" onchange="menuData[\''+catKey+'\']['+i+'].p=this.value;showToast(\'تم حفظ السعر ✓\')" />'+
+        '<button class="del-btn" onclick="delItem(\''+catKey+'\','+i+')">✕</button>';
+      container.appendChild(row);
+    });
+  });
+  var addCat = document.getElementById('add-cat');
+  addCat.innerHTML='';
+  cats.forEach(function(c){ var o=document.createElement('option'); o.value=c; o.textContent=c; addCat.appendChild(o); });
+  document.getElementById('rev-count').textContent=reviews.length;
+  var rList=document.getElementById('admin-reviews');
+  rList.innerHTML='';
+  if(!reviews.length){
+    rList.innerHTML='<div style="font-size:13px;color:#666;text-align:center;padding:16px;">مفيش ريفيوهات لسه</div>';
+    return;
+  }
+  reviews.forEach(function(r,i){
+    var d=document.createElement('div');
+    d.className='review-item';
+    d.innerHTML='<div class="review-top"><span class="reviewer-name">'+r.name+'</span><span class="review-stars">'+'⭐'.repeat(r.stars)+'</span><button class="del-btn" onclick="delReview('+i+')">✕</button></div><div class="review-text">'+r.text+'</div>';
+    rList.appendChild(d);
+  });
+}
+
+function delItem(cat,i){ menuData[cat].splice(i,1); renderAdmin(); showToast('تم الحذف'); }
+function addItem(){
+  var cat=document.getElementById('add-cat').value;
+  var name=document.getElementById('add-name').value.trim();
+  var price=document.getElementById('add-price').value.trim();
+  if(!name||!price){showToast('اكتب الاسم والسعر'); return;}
+  menuData[cat].push({n:name,p:price});
+  document.getElementById('add-name').value='';
+  document.getElementById('add-price').value='';
+  renderAdmin(); showToast('تم الإضافة! ✓');
+}
+function delReview(i){ reviews.splice(i,1); renderAdmin(); showToast('تم حذف الريفيو'); }
+
+function showToast(msg){
+  var t=document.getElementById('toast');
+  t.textContent=msg; t.classList.add('show');
+  setTimeout(function(){t.classList.remove('show');},2200);
+}
+</script>
+</body>
+</html>
