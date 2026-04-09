@@ -7,38 +7,29 @@
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 body { font-family: 'Segoe UI', Tahoma, Arial, sans-serif; background: #111; min-height: 100vh; display: flex; justify-content: center; align-items: flex-start; }
-#app { width: 100%; max-width: 430px; min-height: 100vh; background: #1c1c1e; position: relative; overflow: hidden; }
+#app { width: 100%; max-width: 430px; min-height: 100vh; background: #1c1c1e; position: relative; }
 .screen { display: none; flex-direction: column; min-height: 100vh; }
 .screen.active { display: flex; }
-
-/* TOP BAR */
 .top-bar { background: #000; padding: 14px 16px; display: flex; align-items: center; gap: 12px; flex-shrink: 0; border-bottom: 1px solid #C8A84B33; }
 .top-bar h2 { font-size: 17px; font-weight: 500; color: #C8A84B; }
 .back-btn { background: #1c1c1e; border: 1px solid #C8A84B55; color: #C8A84B; width: 34px; height: 34px; border-radius: 50%; font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-
-/* HOME */
 .home-header { background: #000; padding: 48px 20px 36px; text-align: center; border-bottom: 1px solid #C8A84B22; }
 .home-logo { font-size: 36px; font-weight: 600; color: #C8A84B; letter-spacing: 4px; }
 .home-sub { font-size: 11px; color: #666; letter-spacing: 3px; margin-top: 6px; }
 .home-cup { font-size: 48px; margin-bottom: 12px; }
 .home-body { flex: 1; display: flex; flex-direction: column; justify-content: center; gap: 12px; padding: 32px 24px; }
-.home-btn { width: 100%; padding: 15px 20px; border-radius: 12px; font-size: 15px; font-weight: 500; cursor: pointer; border: none; display: flex; align-items: center; gap: 10px; font-family: inherit; transition: opacity 0.15s; }
-.home-btn:active { opacity: 0.8; }
+.home-btn { width: 100%; padding: 15px 20px; border-radius: 12px; font-size: 15px; font-weight: 500; cursor: pointer; border: none; display: flex; align-items: center; gap: 10px; font-family: inherit; }
 .home-btn.gold { background: #C8A84B; color: #000; }
 .home-btn.dark { background: #2c2c2e; color: #ddd; border: 1px solid #3a3a3c; }
 .home-btn .btn-icon { font-size: 20px; }
-
-/* MENU */
 .tab-row { display: flex; overflow-x: auto; gap: 6px; padding: 10px 12px; background: #000; border-bottom: 1px solid #2c2c2e; flex-shrink: 0; scrollbar-width: none; }
 .tab-row::-webkit-scrollbar { display: none; }
-.tab-btn { border: 1px solid #3a3a3c; background: #2c2c2e; border-radius: 20px; padding: 6px 14px; font-size: 12px; cursor: pointer; white-space: nowrap; color: #aaa; font-family: inherit; transition: all 0.15s; }
+.tab-btn { border: 1px solid #3a3a3c; background: #2c2c2e; border-radius: 20px; padding: 6px 14px; font-size: 12px; cursor: pointer; white-space: nowrap; color: #aaa; font-family: inherit; }
 .tab-btn.active { background: #C8A84B; color: #000; border-color: #C8A84B; font-weight: 600; }
 .items-list { flex: 1; overflow-y: auto; padding: 10px 12px; }
 .item-card { display: flex; justify-content: space-between; align-items: center; padding: 13px 14px; border: 1px solid #2c2c2e; border-radius: 12px; margin-bottom: 8px; background: #2c2c2e; }
 .item-name { font-size: 15px; font-weight: 500; color: #f0f0f0; }
 .item-price { font-size: 15px; font-weight: 600; color: #C8A84B; }
-
-/* REVIEW */
 .review-body { flex: 1; overflow-y: auto; padding: 14px; }
 .avg-badge { background: #000; border: 1px solid #C8A84B44; border-radius: 14px; padding: 16px; text-align: center; margin-bottom: 16px; }
 .avg-num { font-size: 32px; font-weight: 600; color: #C8A84B; }
@@ -51,39 +42,40 @@ body { font-family: 'Segoe UI', Tahoma, Arial, sans-serif; background: #111; min
 textarea.field { min-height: 80px; resize: none; }
 .field:focus { outline: none; border-color: #C8A84B77; }
 .gold-btn { width: 100%; background: #C8A84B; color: #000; border: none; border-radius: 12px; padding: 13px; font-size: 15px; font-weight: 600; cursor: pointer; margin-bottom: 16px; font-family: inherit; }
-.gold-btn:active { opacity: 0.85; }
 .reviews-section h3 { font-size: 13px; color: #888; margin-bottom: 10px; }
-.review-item { border: 1px solid #2c2c2e; border-radius: 12px; padding: 12px 14px; margin-bottom: 8px; background: #2c2c2e; }
-.review-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; }
-.reviewer-name { font-size: 14px; font-weight: 500; color: #f0f0f0; }
-.review-stars { font-size: 13px; letter-spacing: 1px; }
-.review-text { font-size: 13px; color: #aaa; line-height: 1.5; }
 
-/* BOTTOM NAV */
-.bottom-nav { display: flex; background: #000; border-top: 1px solid #2c2c2e; flex-shrink: 0; padding-bottom: env(safe-area-inset-bottom); }
+/* REVIEW CARD */
+.review-item { border: 1px solid #2c2c2e; border-radius: 14px; padding: 13px 14px; margin-bottom: 10px; background: #2c2c2e; }
+.review-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; }
+.reviewer-name { font-size: 14px; font-weight: 600; color: #f0f0f0; }
+.review-stars { font-size: 13px; }
+.review-text { font-size: 13px; color: #ccc; line-height: 1.5; margin-bottom: 10px; }
+
+/* REACTION ROW */
+.react-row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.react-btn { background: #1c1c1e; border: 1px solid #3a3a3c; border-radius: 20px; padding: 4px 11px; font-size: 12px; cursor: pointer; color: #aaa; font-family: inherit; display: flex; align-items: center; gap: 4px; transition: all 0.15s; }
+.react-btn.liked { background: #C8A84B22; border-color: #C8A84B88; color: #C8A84B; }
+.react-btn .rc { font-size: 14px; }
+.reply-toggle { background: none; border: none; color: #888; font-size: 12px; cursor: pointer; font-family: inherit; margin-right: auto; }
+.reply-toggle:hover { color: #C8A84B; }
+
+/* REPLIES */
+.replies-area { margin-top: 10px; border-top: 1px solid #3a3a3c; padding-top: 10px; display: none; }
+.replies-area.open { display: block; }
+.reply-item { background: #1c1c1e; border-radius: 10px; padding: 8px 11px; margin-bottom: 6px; }
+.reply-author { font-size: 11px; font-weight: 600; color: #C8A84B; margin-bottom: 3px; }
+.reply-text { font-size: 12px; color: #bbb; }
+.reply-input-row { display: flex; gap: 6px; margin-top: 6px; }
+.reply-input { flex: 1; border: 1px solid #3a3a3c; border-radius: 8px; padding: 7px 10px; font-size: 12px; background: #1c1c1e; color: #f0f0f0; font-family: inherit; direction: rtl; }
+.reply-send { background: #C8A84B; color: #000; border: none; border-radius: 8px; padding: 7px 13px; font-size: 12px; font-weight: 600; cursor: pointer; font-family: inherit; }
+
+.bottom-nav { display: flex; background: #000; border-top: 1px solid #2c2c2e; flex-shrink: 0; }
 .nav-btn { flex: 1; padding: 10px 4px 8px; background: none; border: none; cursor: pointer; font-size: 10px; color: #666; display: flex; flex-direction: column; align-items: center; gap: 3px; font-family: inherit; }
 .nav-btn .nicon { font-size: 20px; }
 .nav-btn.active { color: #C8A84B; }
-
-/* QR */
-.qr-screen { flex: 1; overflow-y: auto; padding: 20px 16px; display: flex; flex-direction: column; align-items: center; gap: 20px; }
-.qr-card { background: #2c2c2e; border: 1px solid #3a3a3c; border-radius: 16px; padding: 20px; width: 100%; display: flex; flex-direction: column; align-items: center; gap: 12px; }
-.qr-card-title { font-size: 14px; font-weight: 500; color: #f0f0f0; }
-.qr-inner { background: #fff; padding: 12px; border-radius: 10px; }
-.qr-url { font-size: 11px; color: #888; }
-.qr-note { font-size: 12px; color: #666; text-align: center; padding: 0 20px; }
-
-/* ADMIN LOGIN */
-.login-wrap { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px 28px; gap: 0; }
-.login-icon { font-size: 52px; margin-bottom: 16px; }
-.login-name { font-size: 26px; font-weight: 600; color: #C8A84B; letter-spacing: 3px; margin-bottom: 4px; }
-.login-sub { font-size: 12px; color: #666; margin-bottom: 32px; letter-spacing: 1px; }
-.login-err { font-size: 13px; color: #e74c3c; margin-top: 8px; display: none; text-align: center; }
-
-/* ADMIN PANEL */
 .admin-body { flex: 1; overflow-y: auto; padding: 14px; }
 .admin-section { margin-bottom: 18px; }
-.admin-section > h3 { font-size: 13px; color: #888; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px; }
+.admin-section > h3 { font-size: 13px; color: #888; margin-bottom: 10px; letter-spacing: 1px; }
 .cat-label { font-size: 12px; color: #C8A84B; padding: 8px 0 4px; font-weight: 600; }
 .admin-item { display: flex; align-items: center; gap: 8px; border: 1px solid #2c2c2e; border-radius: 10px; padding: 9px 11px; margin-bottom: 5px; background: #2c2c2e; }
 .admin-item-name { flex: 1; font-size: 13px; font-weight: 500; color: #f0f0f0; }
@@ -94,10 +86,22 @@ textarea.field { min-height: 80px; resize: none; }
 .add-form select, .add-form input { width: 100%; border: 1px solid #3a3a3c; border-radius: 8px; padding: 8px 10px; font-size: 13px; background: #1c1c1e; color: #f0f0f0; font-family: inherit; direction: rtl; margin-bottom: 8px; }
 .add-btn { width: 100%; background: #C8A84B; color: #000; border: none; border-radius: 9px; padding: 10px; font-size: 14px; font-weight: 600; cursor: pointer; font-family: inherit; }
 .logout-btn { display: block; margin: 4px auto 12px; background: none; border: 1px solid #3a3a3c; border-radius: 10px; padding: 9px 24px; font-size: 13px; color: #888; cursor: pointer; font-family: inherit; }
-
-/* TOAST */
+.login-wrap { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px 28px; }
+.login-icon { font-size: 52px; margin-bottom: 16px; }
+.login-name { font-size: 26px; font-weight: 600; color: #C8A84B; letter-spacing: 3px; margin-bottom: 4px; }
+.login-sub { font-size: 12px; color: #666; margin-bottom: 32px; letter-spacing: 1px; }
+.login-err { font-size: 13px; color: #e74c3c; margin-top: 8px; display: none; text-align: center; }
+.admin-rev-item { border: 1px solid #2c2c2e; border-radius: 12px; padding: 11px 13px; margin-bottom: 7px; background: #2c2c2e; }
+.admin-rev-top { display: flex; justify-content: space-between; align-items: flex-start; }
+.admin-rev-info { font-size: 13px; color: #f0f0f0; font-weight: 500; }
+.admin-rev-text { font-size: 12px; color: #aaa; margin-top: 4px; }
+.admin-reply-row { display: flex; gap: 6px; margin-top: 8px; }
+.admin-reply-in { flex: 1; border: 1px solid #3a3a3c; border-radius: 8px; padding: 6px 9px; font-size: 12px; background: #1c1c1e; color: #f0f0f0; font-family: inherit; direction: rtl; }
+.admin-reply-btn { background: #C8A84B; color: #000; border: none; border-radius: 8px; padding: 6px 12px; font-size: 12px; font-weight: 600; cursor: pointer; font-family: inherit; }
 .toast { position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%); background: #C8A84B; color: #000; padding: 10px 22px; border-radius: 25px; font-size: 13px; font-weight: 600; opacity: 0; transition: opacity 0.25s; white-space: nowrap; pointer-events: none; z-index: 999; }
 .toast.show { opacity: 1; }
+.empty-state { text-align: center; padding: 32px 20px; color: #555; font-size: 13px; }
+.empty-icon { font-size: 36px; margin-bottom: 8px; }
 </style>
 </head>
 <body>
@@ -114,7 +118,6 @@ textarea.field { min-height: 80px; resize: none; }
     <div class="home-body">
       <button class="home-btn gold" onclick="goTo('menu')"><span class="btn-icon">📋</span> المنيو</button>
       <button class="home-btn dark" onclick="goTo('review')"><span class="btn-icon">⭐</span> اكتب ريفيو</button>
-      <button class="home-btn dark" onclick="goTo('qr')"><span class="btn-icon">📱</span> QR Code</button>
       <button class="home-btn dark" onclick="goTo('admin-login')"><span class="btn-icon">🛠</span> الأدمن</button>
     </div>
   </div>
@@ -145,7 +148,7 @@ textarea.field { min-height: 80px; resize: none; }
         <div class="avg-num" id="avg-num">—</div>
         <div class="avg-sub">متوسط تقييم العملاء</div>
       </div>
-      <div class="stars-row" id="stars-row">
+      <div class="stars-row">
         <button class="star-btn" onclick="setStar(1)">⭐</button>
         <button class="star-btn" onclick="setStar(2)">⭐</button>
         <button class="star-btn" onclick="setStar(3)">⭐</button>
@@ -165,28 +168,6 @@ textarea.field { min-height: 80px; resize: none; }
       <button class="nav-btn" onclick="goTo('home')"><span class="nicon">🏠</span>الرئيسية</button>
       <button class="nav-btn" onclick="goTo('menu')"><span class="nicon">📋</span>المنيو</button>
       <button class="nav-btn active"><span class="nicon">⭐</span>ريفيو</button>
-    </div>
-  </div>
-
-  <!-- QR -->
-  <div class="screen" id="screen-qr">
-    <div class="top-bar">
-      <button class="back-btn" onclick="goTo('home')">←</button>
-      <h2>QR Code</h2>
-    </div>
-    <div class="qr-screen">
-      <div class="qr-note">اطبع الكودين دول وحطهم على الطاولات — العميل يمسح ويوصل للصفحة</div>
-      <div class="qr-card">
-        <div class="qr-card-title">📋 منيو العملاء</div>
-        <div class="qr-inner" id="qr-menu"></div>
-        <div class="qr-url">rawnaaelraies-wq.github.io/mazajj</div>
-      </div>
-      <div class="qr-card">
-        <div class="qr-card-title">⭐ صفحة الريفيو</div>
-        <div class="qr-inner" id="qr-review"></div>
-        <div class="qr-url">rawnaaelraies-wq.github.io/mazajj</div>
-      </div>
-      <div class="qr-note" style="color:#C8A84B; font-size:11px;">بعد النشر على النت، الباركود بيشتغل مع العملاء مباشرةً</div>
     </div>
   </div>
 
@@ -238,6 +219,7 @@ var ADMIN_PW = "mazaj2025";
 var starVal = 0;
 var starLabels = ["","ضعيف 😕","مقبول 😐","كويس 🙂","جيد جداً 😊","ممتاز! 🤩"];
 var currentCat = "";
+var reviews = [];  // فاضي — مفيش ريفيوهات قديمة
 
 var menuData = {
   "مشروبات ساخنة": [
@@ -260,12 +242,6 @@ var menuData = {
   ]
 };
 
-var reviews = [
-  {name:"أحمد",stars:5,text:"أحلى كافيه في المنطقة!"},
-  {name:"سارة",stars:4,text:"القهوة تحفة والجو هادي"},
-  {name:"محمد",stars:5,text:"الشيشة ممتازة والخدمة سريعة"}
-];
-
 currentCat = Object.keys(menuData)[0];
 
 function goTo(id) {
@@ -274,7 +250,6 @@ function goTo(id) {
   window.scrollTo(0,0);
   if(id==='menu') renderMenu();
   if(id==='review') renderReviews();
-  if(id==='qr') renderQR();
   if(id==='admin') renderAdmin();
 }
 
@@ -310,7 +285,18 @@ function submitReview() {
   var name = document.getElementById('r-name').value.trim() || 'عميل';
   var text = document.getElementById('r-text').value.trim();
   if(!text){ showToast('اكتب كومنت'); return; }
-  reviews.unshift({name:name,stars:starVal,text:text});
+  reviews.unshift({
+    id: Date.now(),
+    name: name,
+    stars: starVal,
+    text: text,
+    likes: 0,
+    hearts: 0,
+    likedByMe: false,
+    heartedByMe: false,
+    replies: [],
+    repliesOpen: false
+  });
   document.getElementById('r-name').value='';
   document.getElementById('r-text').value='';
   setStar(0); starVal=0;
@@ -325,25 +311,76 @@ function renderReviews() {
   document.getElementById('avg-num').textContent = reviews.length ? avg.toFixed(1)+' ⭐' : '—';
   var list = document.getElementById('reviews-list');
   list.innerHTML = '';
-  reviews.forEach(function(r){
+  if(!reviews.length){
+    list.innerHTML = '<div class="empty-state"><div class="empty-icon">💬</div>مفيش ريفيوهات لسه<br>كن أول واحد يكتب!</div>';
+    return;
+  }
+  reviews.forEach(function(r, ri){
     var d = document.createElement('div');
     d.className = 'review-item';
-    d.innerHTML = '<div class="review-top"><span class="reviewer-name">'+r.name+'</span><span class="review-stars">'+'⭐'.repeat(r.stars)+'</span></div><div class="review-text">'+r.text+'</div>';
+    d.setAttribute('data-id', r.id);
+
+    var repliesHtml = '';
+    r.replies.forEach(function(rp){
+      repliesHtml += '<div class="reply-item"><div class="reply-author">'+(rp.isAdmin?'☕ مزاج كافيه':rp.author)+'</div><div class="reply-text">'+escHtml(rp.text)+'</div></div>';
+    });
+
+    d.innerHTML =
+      '<div class="review-top">'+
+        '<span class="reviewer-name">'+escHtml(r.name)+'</span>'+
+        '<span class="review-stars">'+'⭐'.repeat(r.stars)+'</span>'+
+      '</div>'+
+      '<div class="review-text">'+escHtml(r.text)+'</div>'+
+      '<div class="react-row">'+
+        '<button class="react-btn'+(r.likedByMe?' liked':'')+'" onclick="toggleLike('+ri+',\'like\')">'+
+          '<span class="rc">👍</span> <span id="lc-'+r.id+'">'+r.likes+'</span>'+
+        '</button>'+
+        '<button class="react-btn'+(r.heartedByMe?' liked':'')+'" onclick="toggleLike('+ri+',\'heart\')">'+
+          '<span class="rc">❤️</span> <span id="hc-'+r.id+'">'+r.hearts+'</span>'+
+        '</button>'+
+        '<button class="reply-toggle" onclick="toggleReplies('+ri+')">'+
+          '💬 رد ('+(r.replies.length)+')'+
+        '</button>'+
+      '</div>'+
+      '<div class="replies-area'+(r.repliesOpen?' open':'')+'" id="rep-'+r.id+'">'+
+        repliesHtml+
+        '<div class="reply-input-row">'+
+          '<input class="reply-input" id="ri-'+r.id+'" placeholder="اكتب رد..." />'+
+          '<button class="reply-send" onclick="sendReply('+ri+')">إرسال</button>'+
+        '</div>'+
+      '</div>';
     list.appendChild(d);
   });
 }
 
-var qrLoaded = false;
-function renderQR() {
-  if(qrLoaded) return;
-  var s = document.createElement('script');
-  s.src = 'https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js';
-  s.onload = function(){
-    new QRCode(document.getElementById('qr-menu'),{text:'https://rawnaaelraies-wq.github.io/mazajj/',width:150,height:150,colorDark:'#000000',colorLight:'#ffffff'});
-    new QRCode(document.getElementById('qr-review'),{text:'https://rawnaaelraies-wq.github.io/mazajj/',width:150,height:150,colorDark:'#000000',colorLight:'#ffffff'});
-    qrLoaded = true;
-  };
-  document.head.appendChild(s);
+function escHtml(s){ return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+function toggleLike(ri, type){
+  var r = reviews[ri];
+  if(type==='like'){
+    r.likedByMe = !r.likedByMe;
+    r.likes += r.likedByMe ? 1 : -1;
+  } else {
+    r.heartedByMe = !r.heartedByMe;
+    r.hearts += r.heartedByMe ? 1 : -1;
+  }
+  renderReviews();
+}
+
+function toggleReplies(ri){
+  reviews[ri].repliesOpen = !reviews[ri].repliesOpen;
+  renderReviews();
+}
+
+function sendReply(ri){
+  var r = reviews[ri];
+  var inp = document.getElementById('ri-'+r.id);
+  var txt = inp ? inp.value.trim() : '';
+  if(!txt){ showToast('اكتب رد'); return; }
+  r.replies.push({author:'أنت', text:txt, isAdmin:false});
+  r.repliesOpen = true;
+  renderReviews();
+  showToast('تم إرسال الرد ✓');
 }
 
 function adminLogin() {
@@ -368,29 +405,52 @@ function renderAdmin() {
     menuData[cat].forEach(function(item,i){
       var row = document.createElement('div');
       row.className='admin-item';
-      var catKey = cat.replace(/'/g,"\\'");
+      var ck = cat.replace(/\\/g,'\\\\').replace(/'/g,"\\'");
       row.innerHTML='<span class="admin-item-name">'+item.n+'</span>'+
-        '<input class="price-in" value="'+item.p+'" onchange="menuData[\''+catKey+'\']['+i+'].p=this.value;showToast(\'تم حفظ السعر ✓\')" />'+
-        '<button class="del-btn" onclick="delItem(\''+catKey+'\','+i+')">✕</button>';
+        '<input class="price-in" value="'+item.p+'" onchange="menuData[\''+ck+'\']['+i+'].p=this.value;showToast(\'تم حفظ السعر ✓\')" />'+
+        '<button class="del-btn" onclick="delItem(\''+ck+'\','+i+')">✕</button>';
       container.appendChild(row);
     });
   });
   var addCat = document.getElementById('add-cat');
   addCat.innerHTML='';
   cats.forEach(function(c){ var o=document.createElement('option'); o.value=c; o.textContent=c; addCat.appendChild(o); });
+
   document.getElementById('rev-count').textContent=reviews.length;
   var rList=document.getElementById('admin-reviews');
   rList.innerHTML='';
   if(!reviews.length){
-    rList.innerHTML='<div style="font-size:13px;color:#666;text-align:center;padding:16px;">مفيش ريفيوهات لسه</div>';
+    rList.innerHTML='<div class="empty-state"><div class="empty-icon">💬</div>مفيش ريفيوهات لسه</div>';
     return;
   }
   reviews.forEach(function(r,i){
     var d=document.createElement('div');
-    d.className='review-item';
-    d.innerHTML='<div class="review-top"><span class="reviewer-name">'+r.name+'</span><span class="review-stars">'+'⭐'.repeat(r.stars)+'</span><button class="del-btn" onclick="delReview('+i+')">✕</button></div><div class="review-text">'+r.text+'</div>';
+    d.className='admin-rev-item';
+    d.innerHTML=
+      '<div class="admin-rev-top">'+
+        '<div>'+
+          '<div class="admin-rev-info">'+escHtml(r.name)+' — '+'⭐'.repeat(r.stars)+'</div>'+
+          '<div class="admin-rev-text">'+escHtml(r.text)+'</div>'+
+        '</div>'+
+        '<button class="del-btn" onclick="delReview('+i+')">✕</button>'+
+      '</div>'+
+      '<div class="admin-reply-row">'+
+        '<input class="admin-reply-in" id="ar-'+r.id+'" placeholder="رد كـ مزاج كافيه..." />'+
+        '<button class="admin-reply-btn" onclick="adminReply('+i+')">رد</button>'+
+      '</div>';
     rList.appendChild(d);
   });
+}
+
+function adminReply(ri){
+  var r = reviews[ri];
+  var inp = document.getElementById('ar-'+r.id);
+  var txt = inp ? inp.value.trim() : '';
+  if(!txt){ showToast('اكتب الرد'); return; }
+  r.replies.push({author:'مزاج كافيه', text:txt, isAdmin:true});
+  inp.value='';
+  renderAdmin();
+  showToast('تم إرسال الرد ✓');
 }
 
 function delItem(cat,i){ menuData[cat].splice(i,1); renderAdmin(); showToast('تم الحذف'); }
